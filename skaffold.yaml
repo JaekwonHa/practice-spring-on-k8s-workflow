@@ -1,0 +1,29 @@
+apiVersion: skaffold/v2beta7
+kind: Config
+metadata:
+  name: myapp
+build:
+  artifacts:
+    - image: hazxz/myapp
+      jib: {}
+#deploy:
+#  kubectl:
+#    manifests:
+#    - deployment.yaml
+#    - service.yaml
+deploy:
+  kustomize:
+    paths:
+      - k8s/base
+
+profiles:
+  - name: development
+    deploy:
+      kustomize:
+        paths:
+          - k8s/overlays/development
+  - name: production
+    deploy:
+      kustomize:
+        paths:
+          - k8s/overlays/production
